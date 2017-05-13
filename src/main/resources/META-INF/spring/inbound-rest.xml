@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xmlns:util="http://www.springframework.org/schema/util"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		">
+
+  <int:transformer ref="pigLatinTransformer" output-channel="httpReplyChannel" input-channel="httpRequestChannel"/>
+
+  <bean id="pigLatinTransformer" class="org.shaun.PigLatinTransformer"/>  
+  
+  <int:channel id="httpRequestChannel" />
+
+  <int:channel id="httpReplyChannel" />
+
+  <int-http:inbound-gateway id="inboundGateway" 
+                            request-channel="httpRequestChannel" 
+                            reply-channel="httpReplyChannel" 
+                            auto-startup="true" 
+                            supported-methods="POST" 
+                            request-payload-type="java.lang.String"
+                            path="/">
+    <int-http:request-mapping produces="application/json" />
+  </int-http:inbound-gateway>
+
+</beans>
