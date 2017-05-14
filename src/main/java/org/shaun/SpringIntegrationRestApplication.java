@@ -2,7 +2,7 @@ package org.shaun;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
@@ -10,10 +10,6 @@ import org.springframework.context.annotation.ImportResource;
 public class SpringIntegrationRestApplication {
 
 	public static void main(String[] args) {
-          ConfigurableApplicationContext ctx = 
-                  new SpringApplication(SpringIntegrationRestApplication.class).run(args);
-          while (true) {
-            //allows the thing to run
-          }
+          ApplicationContext context = SpringApplication.run(SpringIntegrationRestApplication.class, args);
 	}
 }
